@@ -3,25 +3,8 @@
 ---
 Esta app esta hecha con CLI y Test con jest.
 
-La app pide a un usuario que inicie una transaccion y depues dentro del periodo de 5s el usuario intentara hacer otra tarea
-si todo funciona como es debido no deberia de poder ejecutar la peticion hasrta acabado la transacion.
-
-Contiene dos funciones principales: 1º startDebounce y 2º goToPage 
-
-1º startDebounce - esta funcion pide al usuario que empiece la app (una transacion),
-
-1.1º startTransaction - hace un timeout de 5s y devuelve true cuando acaba.
-
-1.2º isTransactionFinished - es de tipo any porque hasta que no se la envoca su valor es
-undefined hasta que startAndWaitTransaction(async function) que coje el valor del await startTransaction
-que sera true si no hay error. 
-
-
-2º goToPage
-Es la forma de probar (simular) una interacion del usuario con la app mientras esta haciendo algo.
-Pide al user que vaya a otra pagina llamando la funcion goToPage. 
-
-2.1º goToPage - comprueba si isTransactionFinished es true (si finalizo) si es asi go Other page!!! 
+Esta app es un todo de tareas, las tareas seguardaran en una base de datos y cache,
+evitando siempre enviar solicitudes a la base de datos inecesarias. 
 
 ---
 
