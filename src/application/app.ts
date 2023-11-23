@@ -7,6 +7,7 @@ import ApiService from "../infrastructure/api/apiService.js";
 import TaskDataBase from "../infrastructure/db/taskDataBase.js";
 import Task from "../core/domain/entities/task.js";
 import DTOSImpl from "../infrastructure/controllers/dtosImpl.js";
+import TaskCacheImpl from "../infrastructure/cache/taskCacheImpl.js";
 
 
 //Init the array arrTasks from Api
@@ -24,6 +25,10 @@ export default class App {
 
     //Instance controller DtosImpl DTO's repository
     dtosImpl = new DTOSImpl(this.taskDataBase);
+
+    //Instance Cache repository
+    taskCacheImpl = new TaskCacheImpl(this.taskDataBase.getTasks());
+
     //---finish infrastructre data--/
 
     //----init core domain ----/
@@ -36,22 +41,42 @@ export default class App {
     taskRepositoryImpl: TaskRepository = new TaskRepositoryImpl(this.dtosImpl);
     //---finish application---/
     
-
-    //---This new tasks come from index.ts by CLI or DOM UI/UX Exemple---/
-    createTask(newTask: Task){
+    //-- PRIVATE CRUD ONLY ACCESS BY PUBLIC CACHE FUNCTIONS--/
+    //Save task in database
+    private createTask(newTask: Task){
         const createTaskDTO = new CreateTaskDTO(newTask);
         this.taskRepositoryImpl.createTask(createTaskDTO.getTask());
     }
-    
-    deleteTask(taskToDelete: Task){
+
+    //Delete task in database
+    private deleteTask(taskToDelete: Task){
         const deleteTaskDTO = new DeleteTaskDTO(taskToDelete);
         this.taskRepositoryImpl.deleteTask(deleteTaskDTO.getTask());
     }
      
-    updateTask(taskToUpdate: Task){
+    //Update task in database
+    private updateTask(taskToUpdate: Task){
         const taskToUpdateDTO = new UpdateTaskDTO(taskToUpdate);
         this.taskRepositoryImpl.updateTask(taskToUpdateDTO.getTask());
     }
+
+    //---USING CACHE---/
+    existTask(newTask: Task){
+        if(this.taskCacheImpl.existTaskInCache(newTask) === true){
+            return true
+        } else if(this.taskCacheImpl.existTaskInCache(newTask) === false) {
+            //save task in cache
+            this.taskCacheImpl.saveTaskInCache(newTask)
+
+            //save task in db
+            this.createTask(newTask)
+            return false
+        }
+    }
+
+
+
+   
 
     getAllTasks(): Array<Task>{
         return this.taskDataBase.getTasks();

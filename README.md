@@ -1,23 +1,31 @@
+
+# DeBounce
+---
+Esta app esta hecha con CLI y Test con jest.
+
+La app pide a un usuario que inicie una transaccion y depues dentro del periodo de 5s el usuario intentara hacer otra tarea
+si todo funciona como es debido no deberia de poder ejecutar la peticion hasrta acabado la transacion.
+
+Contiene dos funciones principales: 1º startDebounce y 2º goToPage 
+
+1º startDebounce - esta funcion pide al usuario que empiece la app (una transacion),
+
+1.1º startTransaction - hace un timeout de 5s y devuelve true cuando acaba.
+
+1.2º isTransactionFinished - es de tipo any porque hasta que no se la envoca su valor es
+undefined hasta que startAndWaitTransaction(async function) que coje el valor del await startTransaction
+que sera true si no hay error. 
+
+
+2º goToPage
+Es la forma de probar (simular) una interacion del usuario con la app mientras esta haciendo algo.
+Pide al user que vaya a otra pagina llamando la funcion goToPage. 
+
+2.1º goToPage - comprueba si isTransactionFinished es true (si finalizo) si es asi go Other page!!! 
+
+---
+
 # Ejemplo básico de TS
-
-TODO:
-Este programa sirve para ver, añadir, quitar o update una tarea.
-
-Una tarea tiene:
-id dado por defecto (random), "0.23423324"
-name (title) de tipo string,
-completed un booleano (true or false) para saber si esta completada la tarea
-
-Utilazando la arquiterua hexagonal.
-
-1º solicita una lista de tareas (simula una API) a traves de service.
-2º esta lista rellena datos en la base de datos por defecto.
-3º utilizando interfaces y injecion de depencia se crea un CRUD
-4º desde del archivo app si estancia y transfiere las peticiones del CLI
-5º en index.ts se ejecuta el CRUD en el CLI.
-
-
-
 
 ---
 

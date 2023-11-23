@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "npx jest",
+    "test": "npx jest --watch --detectOpenHandles",
     "prettier-format": "npx prettier --config .prettierrc 'src/**/*.ts' --write",
     "dev:watcher": "npx nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "dev:run": "npx ts-node src/index.ts",

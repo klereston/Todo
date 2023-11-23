@@ -1,9 +1,9 @@
-import inquirer from "inquirer";
-import Task from "./core/domain/entities/task.js";
-import App from "./application/app.js";
+import inquirer from 'inquirer';
+import App from './application/app';
+import Task from './core/domain/entities/task';
+
 
 const app = new App();
-
 
 const menu = () => {
     const menuTask = inquirer.prompt([
@@ -54,8 +54,14 @@ const createTaskTodo = (app: App) => {
     
         const task = new Task(id, name, completed);
         
-        //Create the task with data
-        app.createTask(task);
+        //Create the task with data if the title(name) doesn't exist.  
+        const exT = app.existTask(task);
+        if(exT === true){
+            console.log("Can Not save this task, This Title Task already exist!")
+            
+            //recursive OJO!!
+            createTaskTodo(app);
+        }
         endMenu();
         
     }).catch((error)=>{
@@ -121,7 +127,7 @@ const updateTaskInput = (task: Task) => {
         task.name = name, 
         task.completed = completed;
         
-        app.updateTask(task);
+        //app.updateTask(task);
         endMenu();
 
     }).catch((error)=>{
@@ -146,7 +152,7 @@ const deleteTaskTodo = (app: App) => {
         //find the task object in db by name
         listOfTasks.forEach((task) => {
             if(message.taskToDelete.includes(task.id.toString())){
-                app.deleteTask(task);
+                //app.deleteTask(task);
                 endMenu();            
             }
         });
